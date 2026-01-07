@@ -1,0 +1,142 @@
+---
+title: Getting Started with Test
+description: Set up your Test account and create your first documentation space in minutes.
+---
+
+## Prerequisites
+
+Before starting, ensure you have:
+
+<Callout kind="info">
+
+- A modern web browser (Chrome, Firefox, Safari, or Edge)
+- An email address for account verification
+- Optional: GitHub account for content import
+
+</Callout>
+
+## Quickstart in 4 Steps
+
+Follow these steps to set up your Test account and create your first documentation space.
+
+<Steps>
+  <Step title="Create Your Account" icon="user-plus">
+
+    Visit `https://dashboard.example.com` and click **Sign Up**.
+
+    Fill in your email and password, then verify your email.
+
+    ```bash
+    # No code required - it's a simple web form
+    ```
+
+  </Step>
+
+  <Step title="Create a Documentation Space" icon="folder-plus">
+
+    After logging in, click **New Space** in the dashboard.
+
+    Enter a name like `My Project Docs` and select a template (e.g., "Empty" or "API Docs").
+
+    <Image
+      src="https://example.com/images/create-space.png"
+      alt="Screenshot of creating a new documentation space"
+      width="800"
+      height="500"
+    />
+
+  </Step>
+
+  <Step title="Navigate the Interface" icon="layout">
+
+    Explore the sidebar:
+
+    | Section       | Purpose                          |
+    |---------------|----------------------------------|
+    | Pages         | Manage your MDX pages            |
+    | Settings      | Configure space options          |
+    | Analytics     | View visitor stats               |
+    | Integrations  | Connect GitHub, Slack, etc.      |
+
+    Use the search bar to find pages quickly.
+
+  </Step>
+
+  <Step title="Import Initial Content" icon="upload">
+
+    Import from GitHub or use the API.
+
+    <Tabs>
+      <Tab title="GitHub" icon="github">
+
+        Connect your repo:
+
+        1. Go to **Integrations > GitHub**
+        2. Authorize and select repo
+        3. Sync content
+
+      </Tab>
+      <Tab title="API" icon="code">
+
+        Use the create page API.
+
+        <CodeGroup tabs="JavaScript,cURL">
+          ```javascript
+          const response = await fetch('https://api.example.com/v1/spaces/{SPACE_ID}/pages', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer YOUR_API_KEY',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              title: 'Welcome',
+              content: '# Hello World\nThis is your first page.'
+            })
+          });
+          ```
+          ```bash
+          curl -X POST https://api.example.com/v1/spaces/{SPACE_ID}/pages \
+            -H "Authorization: Bearer YOUR_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "title": "Welcome",
+              "content": "# Hello World\nThis is your first page."
+            }'
+          ```
+        </CodeGroup>
+
+        <ParamField path="SPACE_ID" param-type="string" required="true">
+          Your documentation space identifier.
+        </ParamField>
+
+        <ParamField header="Authorization" param-type="string" required="true">
+          Bearer token obtained from dashboard settings.
+        </ParamField>
+
+      </Tab>
+    </Tabs>
+
+  </Step>
+</Steps>
+
+## Next Steps
+
+Explore more features to enhance your documentation.
+
+<Columns cols={3}>
+  <Card title="Authentication" icon="lock" href="/authentication">
+    Secure your API access with tokens.
+  </Card>
+  <Card title="Customization" icon="settings" href="/configuration">
+    Configure themes and integrations.
+  </Card>
+  <Card title="Advanced Guides" icon="book-open" href="/introduction">
+    Dive into core concepts.
+  </Card>
+</Columns>
+
+<Callout kind="tip">
+
+Your space is now live at `https://docs.example.com/{SPACE_ID}`. Share the link with your team!
+
+</Callout>

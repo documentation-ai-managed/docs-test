@@ -1,0 +1,153 @@
+---
+title: Integrations and Extensions
+description: Connect Test with third-party tools to enhance your documentation workflow.
+---
+
+## Overview
+
+Test supports seamless integrations with popular third-party tools to automate your documentation processes. You can connect to collaboration platforms, CI/CD pipelines, and export tools directly from your dashboard.
+
+<Columns cols={3}>
+  <Card title="Slack" icon="message-circle" href="https://slack.com" target="_blank">
+    Receive real-time notifications for documentation updates and approvals.
+  </Card>
+  <Card title="GitHub" icon="github" href="https://github.com" target="_blank">
+    Sync changes automatically with your repositories for version control.
+  </Card>
+  <Card title="Zapier" icon="zap" href="https://zapier.com" target="_blank">
+    Build no-code automations with thousands of apps.
+  </Card>
+</Columns>
+
+## Setting Up Webhooks
+
+Webhooks enable real-time event notifications from Test to your services. Use them to trigger actions like deployments or alerts when pages update.
+
+<Steps>
+  <Step title="Create Webhook" icon="plus">
+    Navigate to your project settings in the dashboard at `https://dashboard.example.com/projects/{projectId}/settings/webhooks`.
+    
+    Click "New Webhook" and enter your endpoint URL.
+  </Step>
+  <Step title="Configure Events" icon="settings">
+    Select events such as `page.updated` or `page.published`.
+    
+    Add optional secret for signature verification.
+  </Step>
+  <Step title="Test and Save" icon="play">
+    Send a test payload to verify the connection.
+    
+    Save the webhook—it activates immediately.
+  </Step>
+</Steps>
+
+<Callout kind="tip">
+  Always validate webhook signatures using the `X-Test-Signature` header to prevent unauthorized requests.
+</Callout>
+
+Here is an example webhook payload for a page update:
+
+<CodeGroup tabs="JSON">
+  ```json
+  {
+    "event": "page.updated",
+    "projectId": "proj_123abc",
+    "pageId": "page_456def",
+    "timestamp": 1699123456,
+    "data": {
+      "title": "Updated Documentation",
+      "slug": "integrations"
+    }
+  }
+  ```
+</CodeGroup>
+
+## API Access for Custom Extensions
+
+Build custom integrations using Test's REST API at `https://api.example.com/v1`. Authenticate requests with your API key.
+
+<ParamField header="Authorization" param-type="string" required="true">
+  Bearer token: `Bearer YOUR_API_KEY`.
+</ParamField>
+
+<ParamField query="projectId" param-type="string" required="true">
+  Your project identifier, e.g., `proj_123abc`.
+</ParamField>
+
+Example: Fetch recent pages.
+
+<Request tabs="cURL,JavaScript">
+  ```bash
+  curl -X GET "https://api.example.com/v1/projects/proj_123abc/pages?limit=10" \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+  ```javascript
+  const response = await fetch('https://api.example.com/v1/projects/proj_123abc/pages?limit=10', {
+    headers: {
+      'Authorization': 'Bearer YOUR_API_KEY'
+    }
+  });
+  const pages = await response.json();
+  ```
+</Request>
+
+<Response tabs="200">
+  ```json
+  {
+    "pages": [
+      {
+        "id": "page_456def",
+        "title": "Integrations",
+        "slug": "integrations",
+        "updatedAt": "2024-01-15T10:30:00Z"
+      }
+    ],
+    "total": 50
+  }
+  ```
+</Response>
+
+## Exporting to Other Formats
+
+Export your documentation to various formats for sharing or migration.
+
+<Tabs>
+  <Tab title="PDF" icon="file-text">
+    Generate printable PDFs from the dashboard.
+    
+    ```bash
+    curl -X POST "https://api.example.com/v1/projects/proj_123abc/export/pdf" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -d '{"pages": ["integrations", "quickstart"]}'
+    ```
+    
+    Downloads a ZIP with PDF files.
+  </Tab>
+  <Tab title="Markdown" icon="file">
+    Export as raw Markdown for GitHub or static sites.
+    
+    <CodeGroup tabs="API,cURL">
+      ```javascript
+      // Returns array of Markdown strings
+      const mdExport = await fetchExport('markdown');
+      ```
+      ```bash
+      curl -X POST "https://api.example.com/v1/export/markdown?projectId=proj_123abc" \
+        -H "Authorization: Bearer YOUR_API_KEY"
+      ```
+    </CodeGroup>
+  </Tab>
+  <Tab title="HTML" icon="code">
+    Single-page or multi-page HTML exports.
+    
+    Ideal for embedding or hosting on custom domains.
+  </Tab>
+</Tabs>
+
+<Expandable title="Advanced Export Options" default-open="false">
+  Use query parameters like `?includeDrafts=true` or `?format=zip` for bulk exports.
+  
+  Rate limits apply: `<100` requests per minute.
+</Expandable>
+
+These integrations streamline your workflow. Start with webhooks for notifications, then explore API extensions for deeper customization.
